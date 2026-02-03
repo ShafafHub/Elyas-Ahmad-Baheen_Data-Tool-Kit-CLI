@@ -21,3 +21,7 @@ export function stats(row,column){
         avg: count ? sum / count: 0
     };
 }
+//... Filter Function
+export function filterRows(rows, column, value){
+    return rows.filter(row => row[column] === value || row[column].includes(value));
+}
