@@ -1,104 +1,124 @@
-import fs from "fs";
-import {parseCsv} from "./lib/csv.js";
-import { filterRows, sortRows, stats, } from "./lib/ops.js";
-
+#!/usr/bin/env node
+import fs from 'fs';
+import { parseCsv } from './lib/csv.js';
+import { filterRows, sortRows, stats } from './lib/ops.js';
 
 const args = process.argv.slice(2);
 const command = args[0];
 
-function getArg(name){
-    const index = args.indexOf(name);
-    if(index === -1)
-        return null;
-    return args[index + 1];
+function getArg(name) {
+  const i = args.indexOf(name);
+  if (i === -1) return null;
+  return args[i + 1];
 }
-//... help 
-if(!command || command === "help"){
-    console.log(`   
+
+function positional(i) {
+  return args[i] ?? null;
+}
+// --- Help ---
+if (!command || command === 'help') {
+    console.log(`
 Commands:
 
-    stats   --file <path> --column <name>
-            Show Basic Stats (Count, Min, Max, Avg) For Numeric Column.
+    stats --file <path> --column <name>
+        Show basic stats (Count, Min, Max, Avg) for a numeric column.
 
 
-    filter  --file <path> --column <name> --value <value>
-            Show Rows  Where The  Column  Equals The Value.
+    filter --file <path> --column <name> --value <value>
+        Show rows where the column equals the given value.
 
 
-    sort    --file <path> --column <name> --order asc|desc
-            Sort Rows By The  Specified Column.
+    sort --file <path> --column <name> --order asc|desc
+        Sort rows by the specified column in ascending or descending order.
 
 
-    export  --file <path> --out <path>
-            Export  The CSV To A New File.
+    Use --out <path> with any command to save the output to a CSV file.
 
-EXAMPLES:
+Examples:
 
-    node src/index.js stats --file people.csv --column age
+  npm start -- stats people.csv age
+  npm start -- stats people.csv city
 
-    node src/index.js filter --file people.csv --column city --value Austin
+  npm start -- filter people.csv city Austin
+  npm start -- filter people.csv role Engineer
+  npm start -- filter people.csv age 24
 
-    node src/index.js sort --file people.csv --column age --order asc
+  npm start -- sort people.csv age asc
+  npm start -- sort people.csv age desc
+  npm start -- sort people.csv name asc
+  npm start -- sort people.csv city desc
 
-    node src/index.js sort --file people.csv --column age --order desc
+  npm start -- sort people.csv age asc --out output.csv
+  npm start -- filter people.csv city Austin --out austin.csv
+  npm start -- stats people.csv age --out age-stats.csv
 
-    node src/index.js sort --file people.csv --column age --order asc --out output.csv
-
-    `);
+  npm start -- help
+`);
     process.exit(0);
 }
-//... file
-const filePath = getArg("--file");
-    if (!filePath){
-        console.error("Error: --file is required");
+// --- File check ---
+const filePath = getArg('--file') || positional(1);
+    if (!filePath) {
+        console.error('Error: --file is required');
         process.exit(1);
     }
-    //... read parse and file
-    const text = fs.readFileSync(filePath,"utf-8");
-    let rows = parseCsv(text);
-    // ... stats
-    if(command === "stats"){
-        const column = getArg("--column");
-        if(!column){
-            console.error("Error: --column is required");
+// --- Read CSV ---
+let text;
+try {
+  text = fs.readFileSync(filePath, 'utf-8');
+} catch (err) {
+  console.error('Error reading file:', err.message);
+  process.exit(1);
+}
+// --- Parse CSV ---
+let rows = parseCsv(text);
+
+// --- Stats command ---
+    if (command === 'stats') {
+        const column = getArg('--column') || positional(2);
+        if (!column) {
+            console.error('Error: --column is required');
             process.exit(1);
         }
-        console.log(stats(rows ,column));
+        console.log(stats(rows, column));
     }
     
-//... filter
-    if(command === "filter"){
-        const column = getArg("--column");
-        const value = getArg("--value");
+// --- Filter command ---
+    if (command === 'filter') {
+        const column = getArg('--column') || positional(2);
+        const value = getArg('--value') || positional(3);
         
-        if(!column || !value){
-            console.error("Error: --column and --value are required");
+        if (!column || !value) {
+            console.error('Error: --column and --value are required');
             process.exit(1);
         }
         rows = filterRows(rows, column, value);
         console.log(rows);
     }
-//... sort
-    if(command === "sort"){
-        const column = getArg("--column");
-        const order = getArg("--order") || "asc";
+// --- sort command ---
+    if (command === 'sort') {
+        const column = getArg('--column') || positional(2);
+        const order = getArg('--order') || positional(3) || 'asc';
         
-        if(!column){
-            console.error("Error: --column is required");
+        if (!column) {
+            console.error('Error: --column is required');
             process.exit(1);
         }
         rows = sortRows(rows, column, order);
         console.log(rows);
     }
-    //... export
-    if(command === "export"){
-        const outPath = getArg("--out");
-        if(!outPath){
-            console.error("Error: out is required");
+// --- Export command ---
+    if (command === 'export') {
+        const outPath = getArg('--out');
+
+        if (!outPath) {
+            console.error('Error: out is required');
             process.exit(1);
         }
+
         const header = Object.keys(rows[0]);
-        const csv = [header.join(","), ...rows.map(r => header.map(h => r[h]).join(","))].join("\n");
-        fs.writeFileSync(outPath, csv, "utf-8");
-        console.log("Exported to ", outPath);
+        const csv = [header.join(','), ...rows.map((r) => header.map((h) => r[h]).join(','))].join('\n');
+
+        fs.writeFileSync(outPath, csv, 'utf-8');
+        console.log('Exported to ', outPath);
     }

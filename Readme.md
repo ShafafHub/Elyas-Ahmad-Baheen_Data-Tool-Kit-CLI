@@ -37,7 +37,8 @@ ____________________________________________________________________
 Help
 - Display availbale commands and usage exmaples:
 
-node src/index.js help
+npm start -- help
+
 
 or simply:
 
@@ -45,6 +46,11 @@ node src/index.js
 _________________________________________________________________________
 ## Stats
 - Compute statistic (cont, min, max, avg) for a numeric column
+
+npm start -- stats people.csv age
+npm start -- stats people.csv city
+
+OR
 
 node src/index.js stats --file people.csv --column age
 
@@ -55,12 +61,25 @@ _________________________________________________________________________
 ## Filter
 - Filter rows by a specific column value
 
+npm start -- filter people.csv city Austin
+npm start -- filter people.csv role Engineer
+npm start -- filter people.csv age 24
+
+OR
+
 node src/index.js filter --file people.csv --column city --value Austin
 
 Example output: an array of objects where city equals Austin
 __________________________________________________________________________
 ## Sort
 - Sort rows by a column
+
+npm start -- sort people.csv age asc
+npm start -- sort people.csv age desc
+npm start -- sort people.csv name asc
+npm start -- sort people.csv city desc
+
+OR
 
 node src/index.js sort --file people.csv --column age --order asc
 
@@ -70,6 +89,12 @@ Ouput: array of objects sorted by the specified column
 ____________________________________________________________________________
 ## Export
 - Export the current CSV data (original or filterd/sorted) to a new file
+
+npm start -- sort people.csv age asc --out output.csv
+npm start -- filter people.csv city Austin --out austin.csv
+npm start -- stats people.csv age --out age-stats.csv
+
+OR
 
 node src/index.js export --file people.csv --out output.csv
 

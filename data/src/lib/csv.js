@@ -4,6 +4,7 @@ export function parseCsv(text){
 const lines = text.trim().split(/\r?\n/);
 const header = lines[0].split(",")
 
+//... Map Remaining Lines To Objects Using Header Names as Keys
 return lines.slice(1).map(line => {
     const values = line.split(",");
     const row = {};

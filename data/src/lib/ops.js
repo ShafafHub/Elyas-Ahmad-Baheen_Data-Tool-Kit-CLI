@@ -21,13 +21,13 @@ export function stats(rows,column){
         avg: count ? sum / count : 0
     };
 }
-//... Filter Function
+//... Filter rows by column value
 export function filterRows(rows, column, value){
     return rows.filter(row =>
          row[column] === value || row[column].includes(value)
     );
 }
-//... Sort Function
+//... Sort rows by column (ascending or descending)
     export function sortRows(rows,column, order ="asc"){
         return [...rows].sort((a, b) => {
             const A = a[column];
