@@ -16,18 +16,7 @@ This tool allwos you to read CSV files, compute basic statistics, filter and sor
 
 - Node.js >= 18
 - npm or pnpm
-- project structure:
-
-data/
-├─ package.json
-├─ src/
-│ ├─ index.js
-│ └─ lib/
-│ ├─ csv.js
-│ └─ ops.js
-└─ data/
-└─ people.csv
-____________________________________________________________________
+___________________________________________________________________
 
 Run the CLI using Node.js:
 node src/index.js <command> [options]
@@ -109,14 +98,3 @@ _______________________________________________________________________________
 - Always provide --file for input CSV and --column for column-specific commands.
 - Column names must exactly match the headers in your CSV.
 - Numeric columns are automatically parsed for statistics.
-_______________________________________________________________________________
-## Project Structure:
-
-src/
- ├─ index.js        ← Main CLI
- └─ lib/
-     ├─ csv.js      ← CSV parser
-     └─ ops.js      ← Functions: stats, filter, sort
-data/
- └─ people.csv      ← Sample CSV file
-package.json         ← Project configuration
