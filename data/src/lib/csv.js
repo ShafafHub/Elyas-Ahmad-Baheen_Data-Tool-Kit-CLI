@@ -1,7 +1,6 @@
 export function parseCsv(text){
-    if(!text.trim()) 
-        return[];
-}
+    if(!text.trim()) return[];
+
 const lines = text.trim().split(/\r?\n/);
 const header = lines[0].split(",")
 
@@ -13,4 +12,6 @@ return lines.slice(1).map(line => {
     row[header] = values[i];
     });
     return row;
-})
+    
+    });
+}
