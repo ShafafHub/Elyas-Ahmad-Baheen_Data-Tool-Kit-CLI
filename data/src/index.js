@@ -94,7 +94,7 @@ if (command === "filter") {
   rows = filterRows(rows, column, value);
   console.log(rows);
 }
-// --- sort command ---
+// --- Sort command ---
 if (command === "sort") {
   const column = getArg("--column") || positional(2);
   const order = getArg("--order") || positional(3) || "asc";
