@@ -1,7 +1,7 @@
 import fs from "fs";
 import {parseCsv} from "./lib/csv.js";
 import { filterRows, sortRows, stats, } from "./lib/ops.js";
-import { clearScreenDown } from "readline";
+
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -12,6 +12,7 @@ function getArg(name){
         return null;
     return args[index + 1];
 }
+//... help 
 if(!command || command === "help"){
     console.log(`Commands:
         stats --file <path> --column <name>
@@ -21,25 +22,29 @@ if(!command || command === "help"){
     `);
     process.exit(0);
 }
+//... file
 const filePath = getArg("--file");
     if (!filePath){
         console.error("Error: --file is required");
         process.exit(1);
     }
+    //... read parse and file
     const text = fs.readFileSync(filePath,"utf-8");
     let rows = parseCsv(text);
+    // ... stats
     if(command === "stats"){
         const column = getArg("--column");
         if(!column){
             console.error("Error: --column is required");
             process.exit(1);
         }
+        console.log(stats(rows ,column));
     }
-    console.log(stats(rows ,column));
-
+    
+//... filter
     if(command === "filter"){
         const column = getArg("--column");
-        const value = getArg*("--value");
+        const value = getArg("--value");
         
         if(!column || !value){
             console.error("Error: --column and --value are required");
@@ -48,17 +53,19 @@ const filePath = getArg("--file");
         rows = filterRows(rows, column, value);
         console.log(rows);
     }
+//... sort
     if(command === "sort"){
         const column = getArg("--column");
         const order = getArg("--order") || "asc";
         
         if(!column){
-            console.erro("Error: --column is required");
+            console.error("Error: --column is required");
             process.exit(1);
         }
         rows = sortRows(rows, column, order);
         console.log(rows);
     }
+    //... export
     if(command === "export"){
         const outPath = getArg("--out");
         if(!outPath){
