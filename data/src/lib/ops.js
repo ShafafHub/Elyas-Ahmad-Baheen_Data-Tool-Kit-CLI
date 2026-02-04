@@ -1,4 +1,4 @@
-//...stats Funvtion
+// --- stats ---
 export function stats(rows, column) {
   let count = 0;
   let min = Infinity;
@@ -20,13 +20,13 @@ export function stats(rows, column) {
     avg: count ? sum / count : 0,
   };
 }
-//... Filter rows by column value
+// --- Filter rows by column value ---
 export function filterRows(rows, column, value) {
   return rows.filter(
     (row) => row[column] === value || row[column].includes(value),
   );
 }
-//... Sort rows by column (ascending or descending)
+// --- Sort rows by column (ascending or descending) ---
 export function sortRows(rows, column, order = "asc") {
   return [...rows].sort((a, b) => {
     const A = a[column];
