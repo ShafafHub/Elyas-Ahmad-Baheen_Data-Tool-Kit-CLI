@@ -1,6 +1,6 @@
 import fs from "fs";
 import {parseCsv} from "./lib/csv.js";
-import { stats, } from "./lib/ops.js";
+import { filterRows, sortRows, stats, } from "./lib/ops.js";
 import { clearScreenDown } from "readline";
 
 const args = process.argv.slice(2);
@@ -36,3 +36,27 @@ const filePath = getArg("--file");
         }
     }
     console.log(stats(rows ,column));
+
+    if(command === "filter"){
+        const column = getArg("--column");
+        const value = getArg*("--value");
+        
+        if(!column || !value){
+            console.error("Error: --column and --value are required");
+            process.exit(1);
+        }
+        rows = filterRows(rows, column, value);
+        console.log(rows);
+    }
+    if(command === "sort"){
+        const column = getArg("--column");
+        const order = getArg("--order") || "asc";
+        
+        if(!column){
+            console.erro("Error: --column is required");
+            process.exit(1);
+        }
+        rows = sortRows(rows, column, order);
+        console.log(rows);
+    }
+    
