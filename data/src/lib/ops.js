@@ -25,3 +25,19 @@ export function stats(row,column){
 export function filterRows(rows, column, value){
     return rows.filter(row => row[column] === value || row[column].includes(value));
 }
+//... Sort Function
+    export function sortRows(rows,column, order ="asc"){
+        return [...rows].sort((a,b) => {
+            const A = a[column];
+            const B = b[column];
+
+            const na = Number(A);
+            const nb = Number(b);
+
+            if(!Number.isNaN(na) && Number.isNaN(nb)){
+                return order === "asc" ? na - nb : nb -na;
+            }
+            return order === "asc" ? A.localCompare(B) : B.localCompare(A)
+        });
+
+    }
