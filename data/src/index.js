@@ -14,11 +14,36 @@ function getArg(name){
 }
 //... help 
 if(!command || command === "help"){
-    console.log(`Commands:
-        stats --file <path> --column <name>
-        filter --file <path> --column <name> --value <value>
-        sort --file <path> --column <name> --order asc|desc
-        export --file <path> --out <path>
+    console.log(`   
+Commands:
+
+    stats   --file <path> --column <name>
+            Show Basic Stats (Count, Min, Max, Avg) For Numeric Column.
+
+
+    filter  --file <path> --column <name> --value <value>
+            Show Rows  Where The  Column  Equals The Value.
+
+
+    sort    --file <path> --column <name> --order asc|desc
+            Sort Rows By The  Specified Column.
+
+
+    export  --file <path> --out <path>
+            Export  The CSV To A New File.
+
+EXAMPLES:
+
+    node src/index.js stats --file people.csv --column age
+
+    node src/index.js filter --file people.csv --column city --value Austin
+
+    node src/index.js sort --file people.csv --column age --order asc
+
+    node src/index.js sort --file people.csv --column age --order desc
+
+    node src/index.js sort --file people.csv --column age --order asc --out output.csv
+
     `);
     process.exit(0);
 }
