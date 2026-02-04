@@ -59,4 +59,14 @@ const filePath = getArg("--file");
         rows = sortRows(rows, column, order);
         console.log(rows);
     }
-    
+    if(command === "export"){
+        const outPath = getArg("--out");
+        if(!outPath){
+            console.error("Error: out is required");
+            process.exit(1);
+        }
+        const header = Object.keys(rows[0]);
+        const csv = [header.join(","), ...rows.map(r => header.map(h => r[h]).join(","))].join("\n");
+        fs.writeFileSync(outPath, csv, "utf-8");
+        console.log("Exported to ", outPath);
+    }
