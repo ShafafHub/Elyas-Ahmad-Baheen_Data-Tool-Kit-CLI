@@ -33,7 +33,7 @@ export function sortRows(rows, column, order = "asc") {
     const B = b[column];
 
     const nA = Number(A);
-    const nB = Number(b);
+    const nB = Number(B);
 
     if (!Number.isNaN(nA) && !Number.isNaN(nB)) {
       return order === "asc" ? nA - nB : nB - nA;
