@@ -22,9 +22,11 @@ export function stats(rows, column) {
 }
 // --- Filter rows by column value ---
 export function filterRows(rows, column, value) {
-  return rows.filter(
-    (row) => row[column] === value || row[column].includes(value),
-  );
+  return rows.filter((row) => {
+  const cell = row[column];
+  if (cell == null) return false;
+  return cell === value || cell.includes(value);
+});
 }
 // --- Sort rows by column (ascending or descending) ---
 export function sortRows(rows, column, order = "asc") {
