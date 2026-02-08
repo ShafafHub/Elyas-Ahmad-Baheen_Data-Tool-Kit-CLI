@@ -98,3 +98,6 @@ _______________________________________________________________________________
 - Always provide --file for input CSV and --column for column-specific commands.
 - Column names must exactly match the headers in your CSV.
 - Numeric columns are automatically parsed for statistics.
+_________________________________________________________________________________
+## Data tool-kit Project video link:
+https://drive.google.com/file/d/1lv_JF7seUFsMtt2nkVL3Hz9-5ref_JkK/view?usp=sharing
