@@ -1,0 +1,11 @@
+{
+  "name": "data-toolkit",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "data-toolkit": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  }
+}
